@@ -69,3 +69,14 @@ resource "aws_iam_role_policy_attachment" "terraform_lambda_iam_policy_basic_exe
     role = aws_iam_role.iam_for_terraform_lambda.id
     policy_arn = aws_iam_policy.lambda_policy.arn
 }
+
+
+# Lambda function declaration
+resource "aws_lambda_function" "sqs_processor" {
+    filename = "lambda.zip"
+    source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+    function_name = "${var.app_env}-lambda"
+    role = aws_iam_role.iam_for_terraform_lambda.arn
+    handler = "index.handler"
+    runtime = "python3.8"
+}
