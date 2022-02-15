@@ -80,3 +80,9 @@ resource "aws_lambda_function" "sqs_processor" {
     handler = "index.handler"
     runtime = "python3.8"
 }
+
+# CloudWatch Log Group for the Lambda function
+resource "aws_cloudwatch_log_group" "lambda_loggroup" {
+    name = "/aws/lambda/${aws_lambda_function.sqs_processor.function_name}"
+    retention_in_days = 14
+}
